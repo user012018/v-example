@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>
+</head>
+<body>
+
+
+<div id="app">
+    <ul class="plans">
+        <plan-component name="Basic"></plan-component>
+
+        <plan-component name="Recreational"></plan-component>
+
+        <plan-component name="Team" most-popular></plan-component>
+
+        <plan-component name="Club"></plan-component>
+    </ul>
+</div>
+
+<template id="plan-component">
+    <li v-bind:class="{ 'most-popular': mostPopular }">
+        <p>{{ name }} <small v-if="mostPopular" class="popular-plan-label" style="color: red">Most popular</small></p>
+    </li>
+</template>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+
+
+<div id="app1">
+    <input type="text" v-model="searchQuery">
+
+    <p v-if="isSearching">Searching...</p>
+    <div v-else>
+        <ol>
+            <li v-for="result in results">{{ result }}</li>
+        </ol>
+    </div>
+</div>
+
+<script>
+    new Vue({
+        el: '#app1',
+        data: {
+            searchQuery: '',
+            results: [],
+            isSearching: false
+        },
+        watch: {
+            searchQuery: function(query) {
+                this.isSearching = true;
+                var vm = this;
+
+                setTimeout(function() {
+                    vm.results = ['JavaScript', 'PHP', 'MySQL'];
+                    vm.isSearching = false;
+                }, 500);
+            }
+        }
+    });
+</script>
+
+<!--========================-->
+
+<div id="app">
+    <h1>Movies</h1>
+
+    <ul>
+        <li v-for="title in movieTitles">{{ title }}</li>
+    </ul>
+
+    <h1>Employees</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Company</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="employee in employees">
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.title }}</td>
+            <td>{{ companyName }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            movieTitles: ['The Matrix', 'The Matrix: Reloaded', 'The Matrix Revolutions'],
+            employees: [
+                { name: 'Abby', title: 'Accountant' },
+                { name: 'Andy', title: 'Marketing Manager' },
+                { name: 'Brandon', title: 'Vue.js Expert' }
+            ],
+            companyName: 'VueX Ltd.'
+        }
+    });
+</script>
+
+
+<!--========index==================-->
+<div id="app2">
+    <h1>Employees</h1>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Company</th>
+            <th>Index</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(employee, index) in employees">
+            <td>{{ employee.name }}</td>
+            <td>{{ employee.title }}</td>
+            <td>{{ companyName }}</td>
+            <td>{{ index }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    new Vue({
+        el: '#app2',
+        data: {
+            employees: [
+                { name: 'Abby', title: 'Accountant' },
+                { name: 'Andy', title: 'Marketing Manager' },
+                { name: 'Brandon', title: 'Vue.js Expert' }
+            ],
+            companyName: 'VueX Ltd.'
+        }
+    });
+</script>
+
+<!--========================-->
+<div id="app3">
+    <ul>
+        <li v-for="(n, index) in 10">{{ n }} * {{ index }} = {{ n * index }}</li>
+    </ul>
+</div>
+
+<script>
+    new Vue({
+        el: '#app3'
+    });
+</script>
+
+<!--=========================-->
+<div id="app4">
+    <ul>
+        <li v-for="n in numbers">{{ n }}</li>
+    </ul>
+
+    <button v-on:click="changeNumber()">Change Number</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app4',
+        data: {
+            numbers: [1, 2, 3, 4, 5]
+        },
+        methods: {
+            changeNumber: function() {
+                Vue.set(this.numbers, 1, 10);
+                // alert(this.numbers[1]);
+            }
+        }
+    });
+</script>
+
+<!--================================-->
+<div id="app5">
+    <ul>
+        <li v-for="p in persons" v-bind:key="p.id">{{ p.name }} (ID: {{ p.id }}) <input type="text"></li>
+    </ul>
+
+    <button v-on:click="addNewPerson()">Add Person</button>
+    <button v-on:click="shuffle()">Shuffle</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app5',
+        data: {
+            persons: [
+                { id: 1, name: 'Andy' },
+                { id: 2, name: 'Abby' },
+                { id: 3, name: 'Teresa' }
+            ]
+        },
+        methods: {
+            addNewPerson: function() {
+                var highestId = Math.max.apply(Math, this.persons.map(function(p) {
+                    return p.id;
+                }));
+                var names = ['Billy', 'Michael', 'Steve', 'Diane', 'Peter'];
+
+                this.persons.push({
+                    id: highestId + 1,
+                    name: names[Math.floor(Math.random() * names.length)]
+                });
+            },
+            shuffle: function() {
+                this.persons = this.shuffleArray(this.persons);
+            },
+            shuffleArray: function (arr) {
+                var newArr = arr.slice();
+
+                for (var i = newArr.length - 1; i > 0; i--) {
+                    var j = Math.floor(Math.random() * (i + 1));
+                    var temp = newArr[i];
+                    newArr[i] = newArr[j];
+                    newArr[j] = temp;
+                }
+
+                return newArr;
+            }
+        }
+    });
+</script>
+
+
+
+
+</body>
+</html>

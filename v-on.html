@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+</head>
+<body>
+
+
+<div id="app">
+    <button v-on:click="hello">Hello (v-on)</button>
+    <button @click="hello">Hello (shorthand)</button>
+
+    <p v-bind:title="title">Hover me (v-bind)</p>
+    <p :title="title">Hover me (shorthand)</p>
+</div>
+
+
+<!--=====================-->
+<div id="app2">
+    <p v-show="isNinja">Invisible like a ninja!</p>
+    <p v-show="!isNinja">Here I am!</p>
+
+    <button v-on:click="isNinja = !isNinja">Toggle Ninja Skills</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app2',
+        data: {
+            isNinja: true
+        }
+    });
+</script>
+
+
+
+</body>
+</html>

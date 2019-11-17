@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+
+
+</head>
+<body>
+
+
+<div id="vm1">
+    <h1>{{ name }}</h1>
+</div>
+
+<div id="vm2">
+    <button @click="showName">Show name</button>
+</div>
+<script>
+    var vm1 = new Vue({
+        el: '#vm1',
+        data: {
+            name: 'Vue Instance #1'
+        }
+    });
+
+    var vm2 = new Vue({
+        el: '#vm2',
+        methods: {
+            showName: function () {
+                alert("The name of the other Vue instance is: ");
+            }
+        }
+    });
+
+    setTimeout(function () {
+        vm1.name = 'Hello from the other side!';
+    }, 2000);
+
+</script>
+
+
+<!--===============================-->
+
+
+<div id="appa1">
+    <label for="thing">field 3.2.1:</label>
+    <input id="thing" type="text"/>
+    <p class="formname"></p>
+</div>
+<script>
+    $(function () {
+        //keypress wouldn't include delete key, keyup does. We also query the div id app and find the other elements so that we can reduce lookups
+        $('#appa1').keyup(function (e) {
+            var formname = $(this).find('.formname');
+            //store in a variable to reduce repetition
+            var n_input = $(this).find('#thing').val();
+            formname.empty();
+            formname.append(n_input);
+        });
+    });
+
+</script>
+
+<div id="appa2">
+    <label for="name">field 2.5.3:</label>
+    <input id="name" type="text" v-model="name"/> <!--v-model is doing the magic here-->
+    <p>{{ name }}</p>
+</div>
+<script>
+    //this is a vue instance
+    new Vue({
+        //this targets the div id app
+        el: '#appa2',
+        data: {
+            name: '' //this stores data values for ‘name’
+        }
+    })
+</script>
+
+<hr>
+
+<div id="appb1">
+    <button type="button" id="toggle_appb1" aria-expanded="false">
+        Toggle Panel
+    </button>
+    <p class="hello_appb1">hello</p>
+</div>
+<script>
+    $(function () {
+        $('#toggle_appb1').on('click', function () {
+            $('.hello_appb1').hide();
+
+            if ($(this).attr('aria-expanded') == "false") {
+                $(this).attr('aria-expanded', true);
+                $('.hello_appb1').hide();
+            } else {
+                $(this).attr('aria-expanded', false);
+                $('.hello_appb1').show();
+            }
+
+            // $(this).attr('aria-expanded', ($(this).attr('aria-expanded') == "false" ? true : false));
+
+
+        });
+    });
+</script>
+
+
+<!--================-->
+<div id="app2x">
+    <p v-show="isNinja">Invisible like a ninja!</p>
+    <p v-show="!isNinja">Here I am!</p>
+
+    <button v-on:click="isNinja = !isNinja">Toggle Ninja Skills</button>
+</div>
+
+<script>
+    new Vue({
+        el: '#app2x',
+        data: {
+            isNinja: true
+        }
+    });
+</script>
+
+<!--===========================-->
+
+
+<div id="appb2">
+    <button @click="show = !show" :aria-expanded="show ? 'true' : 'false'">
+        Toggle Panel
+    </button>
+    <p v-if="show">hello</p>
+</div>
+<script>
+    new Vue({
+        el: '#appb2',
+        data: {
+            show: true
+        }
+    })
+
+</script>
+
+<hr>
+
+<div id="appc1">
+    <label for="textareac1">What is your favorite kind of chokolet?</label>
+    <textarea id="textareac1"></textarea>
+    <br>
+    <button id="c1" v-show="chokolet">Let us know!</button>
+</div>
+<script>
+    $(function () {
+        var button = $('button#c1');
+        var textarea = $('#textareac1');
+
+        button.hide();
+        textarea.keyup(function () {
+            if (textarea.val().length > 0) {
+                button.show();
+            } else {
+                button.hide();
+            }
+        })
+    });
+
+</script>
+
+
+<div id="appc2">
+    <label for="textareac2">What is your favorite kind of chokolet?</label>
+    <textarea id="textareac2" v-model="chokolet"></textarea>
+    <br>
+    <button v-show="chokolet">Let us know!</button>
+</div>
+<script>
+    new Vue({
+        el: '#appc2',
+        data() {
+            return {
+                chokolet: ''
+            }
+        }
+    })
+</script>
+
+<hr>
+
+<div id="appd1">
+    <form id="d1f" action="/">
+        <div>
+            <label for="name">Name:</label><br>
+            <input id="name" type="text" name="name" required/>
+        </div>
+        <div>
+            <label for="email">Email:</label><br>
+            <input id="email" type="email" name="email" required/>
+        </div>
+        <div>
+            <label for="caps">HOW DO I TURN OFF CAPS LOCK:</label><br>
+            <textarea id="caps" name="caps" required></textarea>
+        </div>
+        <button class="submit" id="d1b" type="submit">Submit</button>
+        <div>
+            <h3>Response from server:</h3>
+            <pre class="responsec1"></pre>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function () {
+        var button = $("button#d1b");
+        var name = $("input[name=name]");
+
+        name.keyup(function () {
+            if (name.val().length > 0) {
+                button.addClass('active');
+            } else {
+                button.removeClass('active');
+            }
+        });
+
+        $("form#d1f").submit(function (event) {
+            event.preventDefault();
+
+            //get the form data
+            var formData = {
+                name: $("input[name=name]").val(),
+                email: $("input[name=email]").val(),
+                caps: 'jhgjhgj'//$("input[name=caps]").val().length>0?$("input[name=caps]").val():'jhgjhgj'
+            };
+            console.log(formData);
+
+            // process the form
+            $.ajax({
+                type: "POST",
+                url: "//jsonplaceholder.typicode.com/posts",
+                data: formData,
+                dataType: "json",
+                encode: true
+            }).done(function (data) {
+                console.log(data);
+                $(".responsec1")
+                    .empty()
+                    .append(JSON.stringify(data, null, 2));
+            });
+        });
+    });
+
+
+</script>
+
+
+<div id="app">
+    <form @submit.prevent="submitForm">
+        <div>
+            <label for="name">Name:</label><br>
+            <input id="name" type="text" v-model="name" required/>
+        </div>
+        <div>
+            <label for="email">Email:</label><br>
+            <input id="email" type="email" v-model="email" required/>
+        </div>
+        <div>
+            <label for="caps">HOW DO I TURN OFF CAPS LOCK:</label><br>
+            <textarea id="caps" v-model="caps" required></textarea>
+        </div>
+        <button :class="[name ? activeClass : '']" type="submit">Submit</button>
+        <div>
+            <h3>Response from server:</h3>
+            <pre>{{ response }}</pre>
+        </div>
+    </form>
+</div>
+
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                name: '',
+                email: '',
+                caps: '',
+                response: '',
+                activeClass: 'active'
+            }
+        },
+        methods: {
+            submitForm() {
+                axios.post('//jsonplaceholder.typicode.com/posts', {
+                    name: this.name,
+                    email: this.email,
+                    caps: this.caps
+                }).then(response => {
+                    this.response = JSON.stringify(response, null, 2)
+                })
+            }
+        }
+    })
+
+
+</script>
+
+
+</body>
+</html>

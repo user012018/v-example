@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.3/vue.min.js"></script>-->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>-->
+</head>
+<body>
+
+<div v-if="Math.random() > 0.5">
+    Сейчас меня видно
+</div>
+<div v-else>
+    А теперь — нет
+</div>
+
+<!--=====================================-->
+<template>
+    <div v-if="available">
+        <h1>Items are available</h1>
+        <p>More items in the stock</p>
+    </div>
+    <div v-else>
+        <h1>Items are not available</h1>
+        <p>Out of stock</p>
+    </div>
+</template>
+
+<script>
+    export default {
+        data: function() {
+            return {
+                available: true
+            };
+        }
+    };
+</script>
+
+<!--================================-->
+<template>
+    <div>
+        <!-- v-if="javascript expression" -->
+        <h1 v-if="isActive">Hello Vuejs</h1>
+        <button @click="isActive= !isActive">Click</button>
+    </div>
+</template>
+
+<script>
+
+    export default{
+        data:function(){
+            return{
+                isActive:false
+            }
+        }
+    }
+</script>
+
+<!--=================================--><hr>
+
+<div id="app">
+    <p v-if="itemsInStock > 10">{{ itemsInStock }} in stock.</p>
+    <p v-else-if="itemsInStock > 0">Hurry up, there are just a few items left!</p>
+    <p v-else>Too bad, we're all out!</p>
+
+    <template v-if="itemsInStock > 50">
+        <p>Special Offer!</p>
+        <p>Looks like we have tons of products in stock... Save 20% if you order now!</p>
+    </template>
+</div>
+
+
+
+<!--<template v-if="itemsInStock > 50">-->
+    <!--<p>Special Offer!</p>-->
+    <!--<p>Looks like we have tons of products in stock... Save 20% if you order now!</p>-->
+<!--</template>-->
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            itemsInStock: 51
+        }
+    });
+</script>
+
+
+</body>
+</html>
